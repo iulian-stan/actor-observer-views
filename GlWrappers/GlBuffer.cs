@@ -40,7 +40,7 @@ namespace ActorObserverViews.GlWrappers
         /// <param name="target">Target to which the buffer object is bound</param>
         /// <param name="data">Data that will be copied into the data store for initialization</param>
         /// <param name="usageHint">Expected usage pattern of the data store</param>
-        /// 
+        ///
         public GlBuffer(BufferTarget target, float[] data, BufferUsageHint usageHint) : this(target)
         {
             GL.BufferData(_target, data.Length * sizeof(float), data, usageHint);

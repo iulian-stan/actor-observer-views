@@ -5,7 +5,7 @@
         public static readonly float[] Vertices =
         {
             // Position           Texture
-            // X      Y      Z    X     Y    
+            // X      Y      Z    X     Y
              0.5f,  0.5f,  0.5f, .50f, .75f, // front top right
              0.5f, -0.5f,  0.5f, .50f, .50f, // front bottom right
             -0.5f, -0.5f,  0.5f, .25f, .50f, // front bottom left

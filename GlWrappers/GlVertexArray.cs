@@ -24,7 +24,7 @@ namespace ActorObserverViews.GlWrappers
         public DrawElementsType DrawElementsType { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="primitiveType"></param>
         /// <param name="drawElements"></param>
