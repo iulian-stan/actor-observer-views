@@ -1,0 +1,60 @@
+name: Continuous Delivery (release)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  build:
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Artifact_Name: ActorObserverViews
+      Project_Name: ActorObserverViews.csproj
+
+    steps:
+
+    # Checkout the repository
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    # Execute all unit tests in the solution
+    #- name: Execute unit tests
+    #  run: dotnet test
+
+    # Restore the application (install nuget packages)
+    - name: Restore the application
+      run: msbuild $env:Project_Name /t:Restore /p:Configuration=Release
+
+    # Build the application
+    - name: Build the application
+      run: msbuild $env:Project_Name /p:Configuration=Release
+
+    # Archive the executable and resources
+    - name: Archive build artifacts
+      run: Compress-Archive -Path bin/Release/net8.0-windows7.0/* -Destination ${{ env.Artifact_Name }}.zip
+
+    # Create release
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: github.ref_type == 'tag'
+      with:
+        name: Release ${{ github.ref_name }}
+        body: Built executables version ${{ github.ref_name }}
+        draft: true
+        files: ${{ env.Artifact_Name }}.zip
